@@ -1,7 +1,6 @@
 import logging
 import os
 
-
 from dotenv import load_dotenv
 from google.cloud import dialogflow
 from telegram import Update, ForceReply
@@ -46,11 +45,9 @@ def start(update: Update, context: CallbackContext) -> None:
         reply_markup=ForceReply(selective=True),
     )
 
-
 def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
-
 
 def echo(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
