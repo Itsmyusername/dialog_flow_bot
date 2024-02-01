@@ -1,5 +1,6 @@
 import os
 import vk_api
+import requests
 
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -26,7 +27,6 @@ def send_to_dialogflow(text, session_id):
     )
     return response
 
-
 def handle_message(event):
     session_id = str(event.user_id)
     user_message = event.text
@@ -38,19 +38,31 @@ def handle_message(event):
         random_id=event.random_id
     )
 
+def send_telegram_alert(message):
+    token = os.getenv("TOKEN_TG_BOT")
+    chat_id = os.getenv("ADMIN_CHAT_ID")
+    send_text = f'https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&parse_mode=Markdown&text={message}'
+
+    response = requests.get(send_text)
+    return response.json()
+
 
 if __name__ == "__main__":
-    longpoll = VkLongPoll(vk_session)
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            session_id = str(event.user_id)
-            user_message = event.text
-            dialogflow_response = send_to_dialogflow(user_message, session_id)
-            
-            if not dialogflow_response.query_result.intent.is_fallback:
-                response_text = dialogflow_response.query_result.fulfillment_text
-                vk_api.messages.send(
-                    user_id=event.user_id,
-                    message=response_text,
-                    random_id=event.random_id
-                )
+    try:
+        longpoll = VkLongPoll(vk_session)
+        for event in longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                session_id = str(event.user_id)
+                user_message = event.text
+                dialogflow_response = send_to_dialogflow(user_message, session_id)
+                if not dialogflow_response.query_result.intent.is_fallback:
+                    response_text = dialogflow_response.query_result.fulfillment_text
+                    vk_api.messages.send(
+                        user_id=event.user_id,
+                        message=response_text,
+                        random_id=event.random_id
+                        )
+    except Exception as e:
+        error_message = f"Произошла ошибка в боте VK: {e}"
+        send_telegram_alert(error_message)
+        raise e
