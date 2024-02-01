@@ -49,9 +49,12 @@ def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
 
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
+def error_handler(update: object, context: CallbackContext) -> None:
+    """Log the error and send a telegram message to notify the developer."""
+    logger.error(msg="Exception while handling an update:", exc_info=context.error)
+    chat_id = os.getenv("ADMIN_CHAT_ID")
+    text = f"Произошла ошибка: {context.error}"
+    context.bot.send_message(chat_id=chat_id, text=text)
 
 
 def main() -> None:
@@ -60,6 +63,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, reply_to_user))
+    dispatcher.add_error_handler(error_handler)
     updater.start_polling()
     updater.idle()
 
