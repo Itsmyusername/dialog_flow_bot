@@ -29,7 +29,7 @@ def detect_intent_texts(project_id, session_id, text, language_code):
     return response.query_result.fulfillment_text
 
 def reply_to_user(update: Update, context: CallbackContext):
-    project_id = "newagent-rxdx"
+    project_id = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
     session_id = str(update.message.chat_id)
     text = update.message.text
     language_code = "ru"

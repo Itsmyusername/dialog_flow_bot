@@ -11,7 +11,7 @@ from google.protobuf.json_format import MessageToJson
 load_dotenv()
 VK_TOKEN_GROUP = os.getenv("VK_TOKEN_GROUP")
 DIALOGFLOW_JSON_KEY = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-PROJECT_ID = "newagent-rxdx"
+PROJECT_ID = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
 
 vk_session = vk_api.VkApi(token=VK_TOKEN_GROUP)
 vk_api = vk_session.get_api()

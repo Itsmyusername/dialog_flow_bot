@@ -35,7 +35,7 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 
 
 def main():
-    project_id = "newagent-rxdx"
+    project_id = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
     for intent_name, data in questions_data.items():
         questions = data["questions"]
         answer = data["answer"]
