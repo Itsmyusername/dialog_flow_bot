@@ -13,9 +13,7 @@ VK_TOKEN_GROUP = os.getenv("VK_TOKEN_GROUP")
 DIALOGFLOW_JSON_KEY = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 PROJECT_ID = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
 
-vk_session = vk_api.VkApi(token=VK_TOKEN_GROUP)
-vk_api = vk_session.get_api()
-dialogflow_session_client = dialogflow.SessionsClient()
+
 
 
 def send_to_dialogflow(text, session_id):
@@ -48,6 +46,10 @@ def send_telegram_alert(message):
 
 
 if __name__ == "__main__":
+    vk_session = vk_api.VkApi(token=VK_TOKEN_GROUP)
+    vk_api = vk_session.get_api()
+    dialogflow_session_client = dialogflow.SessionsClient()
+    load_dotenv()
     try:
         longpoll = VkLongPoll(vk_session)
         for event in longpoll.listen():
