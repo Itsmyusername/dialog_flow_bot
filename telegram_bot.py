@@ -7,13 +7,6 @@ from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 
-load_dotenv()
-TOKEN=os.environ["TOKEN_TG_BOT"]
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-
 logger = logging.getLogger(__name__)
 
 
@@ -57,6 +50,11 @@ def error_handler(update: object, context: CallbackContext) -> None:
 
 
 def main() -> None:
+    load_dotenv()
+    TOKEN=os.environ["TOKEN_TG_BOT"]
+    logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+    )
     updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
