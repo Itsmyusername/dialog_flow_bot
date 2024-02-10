@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+from dialogflow_utils import send_to_dialogflow
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
@@ -10,7 +11,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 logger = logging.getLogger(__name__)
 
 
-def detect_intent_texts(project_id, session_id, text, language_code):
+def send_to_dialogflow(project_id, session_id, text, language_code):
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
 
