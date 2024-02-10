@@ -23,17 +23,6 @@ def send_to_dialogflow(text, session_id):
     )
     return response
 
-def handle_message(event):
-    session_id = str(event.user_id)
-    user_message = event.text
-    dialogflow_response = send_to_dialogflow(user_message, session_id)
-    response_text = dialogflow_response.query_result.fulfillment_text
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=response_text,
-        random_id=event.random_id
-    )
-
 def send_telegram_alert(message):
     token = os.getenv("TOKEN_TG_BOT")
     chat_id = os.getenv("ADMIN_CHAT_ID")
