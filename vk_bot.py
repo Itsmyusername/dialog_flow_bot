@@ -36,9 +36,13 @@ def handle_message(event):
 def send_telegram_alert(message):
     token = os.getenv("TOKEN_TG_BOT")
     chat_id = os.getenv("ADMIN_CHAT_ID")
-    send_text = f'https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&parse_mode=Markdown&text={message}'
-
-    response = requests.get(send_text)
+    url = f'https://api.telegram.org/bot{token}/sendMessage'
+    params = {
+        'chat_id': chat_id,
+        'parse_mode': 'Markdown',
+        'text': message
+    }
+    response = requests.get(url, params=params)
     return response.json()
 
 
