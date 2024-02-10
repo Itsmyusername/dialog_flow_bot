@@ -9,7 +9,6 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 
 load_dotenv()
 TOKEN=os.environ["TOKEN_TG_BOT"]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
