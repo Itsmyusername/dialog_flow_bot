@@ -8,12 +8,9 @@ from google.cloud import dialogflow_v2 as dialogflow
 from google.protobuf.json_format import MessageToJson
 
 
-load_dotenv()
 VK_TOKEN_GROUP = os.getenv("VK_TOKEN_GROUP")
 DIALOGFLOW_JSON_KEY = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 PROJECT_ID = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
-
-
 
 
 def send_to_dialogflow(text, session_id):
