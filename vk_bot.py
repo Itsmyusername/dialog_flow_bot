@@ -13,7 +13,7 @@ DIALOGFLOW_JSON_KEY = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 PROJECT_ID = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
 
 
-def send_to_dialogflow(text, session_id):
+def send_text_to_dialogflow(text, session_id):
     session = dialogflow_session_client.session_path(PROJECT_ID, session_id)
     text_input = dialogflow.TextInput(text=text, language_code="ru-RU")
     query_input = dialogflow.QueryInput(text=text_input)
@@ -25,7 +25,7 @@ def send_to_dialogflow(text, session_id):
 def handle_message(event):
     session_id = str(event.user_id)
     user_message = event.text
-    dialogflow_response = send_to_dialogflow(user_message, session_id)
+    dialogflow_response = send_text_to_dialogflow(user_message, session_id)
     response_text = dialogflow_response.query_result.fulfillment_text
     vk_api.messages.send(
         user_id=event.user_id,
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 session_id = str(event.user_id)
                 user_message = event.text
-                dialogflow_response = send_to_dialogflow(user_message, session_id)
+                dialogflow_response = send_text_to_dialogflow(user_message, session_id)
                 if not dialogflow_response.query_result.intent.is_fallback:
                     response_text = dialogflow_response.query_result.fulfillment_text
                     vk_api.messages.send(
