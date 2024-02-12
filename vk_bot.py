@@ -14,15 +14,6 @@ DIALOGFLOW_JSON_KEY = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 PROJECT_ID = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
 
 
-def send_to_dialogflow(text, session_id):
-    session = dialogflow_session_client.session_path(PROJECT_ID, session_id)
-    text_input = dialogflow.TextInput(text=text, language_code="ru-RU")
-    query_input = dialogflow.QueryInput(text=text_input)
-    response = dialogflow_session_client.detect_intent(
-        session=session, query_input=query_input
-    )
-    return response
-
 def send_telegram_alert(message):
     token = os.getenv("TOKEN_TG_BOT")
     chat_id = os.getenv("ADMIN_CHAT_ID")
