@@ -36,7 +36,13 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
     print("Intent created: {}".format(response))
 
 
-def main(data_url):
+if __name__ == "__main__":
+    load_dotenv()
+    parser = argparse.ArgumentParser(description="Download questions from a URL and create Dialogflow intents.")
+    parser.add_argument("data_url", help="URL to the JSON file containing questions and answers.")
+
+    args = parser.parse_args()
+    data_url = args.data_url
     questions_data = download_data(data_url)
 
     project_id = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
@@ -51,12 +57,3 @@ def main(data_url):
             training_phrases_parts=questions,
             message_texts=[answer]
         )
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    parser = argparse.ArgumentParser(description="Download questions from a URL and create Dialogflow intents.")
-    parser.add_argument("data_url", help="URL to the JSON file containing questions and answers.")
-
-    args = parser.parse_args()
-    main(args.data_url)
