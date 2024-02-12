@@ -24,6 +24,7 @@ def send_telegram_alert(message):
         'text': message
     }
     response = requests.get(url, params=params)
+    response.raise_for_status()
     return response.json()
 
 
