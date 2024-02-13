@@ -17,7 +17,7 @@ def reply_to_user(update: Update, context: CallbackContext):
     text = update.message.text
     language_code = "ru"
 
-    response_text = detect_intent_texts(project_id, session_id, text, language_code)
+    response_text = get_dialogflow_respons(project_id, session_id, text, language_code)
     update.message.reply_text(response_text)
 
 
