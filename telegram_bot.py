@@ -20,6 +20,7 @@ def reply_to_user(update: Update, context: CallbackContext):
     response_text = detect_intent_texts(project_id, session_id, text, language_code)
     update.message.reply_text(response_text)
 
+
 def start(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     user = update.effective_user
@@ -27,6 +28,7 @@ def start(update: Update, context: CallbackContext) -> None:
         fr'Hi {user.mention_markdown_v2()}\!',
         reply_markup=ForceReply(selective=True),
     )
+
 
 def error_handler(update: object, context: CallbackContext) -> None:
     """Log the error and send a telegram message to notify the developer."""
@@ -39,11 +41,8 @@ def error_handler(update: object, context: CallbackContext) -> None:
 def main() -> None:
     load_dotenv()
     TOKEN=os.environ["TOKEN_TG_BOT"]
-
-    logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-    )
-
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=logging.INFO)
     updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
