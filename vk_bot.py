@@ -2,7 +2,7 @@ import os
 import vk_api
 import requests
 
-from dialogflow_utils import send_in_dialogflow
+from dialogflow_utils import get_dialogflow_respons
 from google.cloud import dialogflow
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -39,7 +39,7 @@ if __name__ == "__main__":
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 session_id = str(event.user_id)
                 user_message = event.text
-                dialogflow_response = send_in_dialogflow(user_message, session_id)
+                dialogflow_response = get_dialogflow_respons(user_message, session_id)
                 if not dialogflow_response.query_result.intent.is_fallback:
                     response_text = dialogflow_response.query_result.fulfillment_text
                     vk_api.messages.send(

@@ -3,7 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
-from dialogflow_utils import send_in_dialogflow
+from dialogflow_utils import get_dialogflow_respons
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
