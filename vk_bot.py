@@ -2,7 +2,7 @@ import os
 import vk_api
 import requests
 
-from dialogflow_utils import get_dialogflow_respons
+from dialogflow_utils import get_dialogflow_response
 from google.cloud import dialogflow
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -30,7 +30,7 @@ def send_telegram_alert(message):
 
 if __name__ == "__main__":
     vk_session = vk_api.VkApi(token=VK_TOKEN_GROUP)
-    vk_api = vk_session.get_api()
+    vk_session_api = vk_session.get_api()
     dialogflow_session_client = dialogflow.SessionsClient()
     load_dotenv()
     try:
@@ -39,14 +39,16 @@ if __name__ == "__main__":
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 session_id = str(event.user_id)
                 user_message = event.text
-                dialogflow_response = get_dialogflow_respons(os.environ["GOOGLE_APPLICATION_CREDENTIALS"], user_message, session_id)
-                if not dialogflow_response.query_result.intent.is_fallback:
-                    response_text = dialogflow_response.query_result.fulfillment_text
-                    vk_api.messages.send(
+                dialogflow_response = get_dialogflow_response(PROJECT_ID, session_id,
+                                                              user_message)
+                if dialogflow_response:
+                    if not dialogflow_response.intent.is_fallback:
+                        response_text = dialogflow_response.fulfillment_text
+                        vk_session_api.messages.send(
                         user_id=event.user_id,
                         message=response_text,
                         random_id=event.random_id
-                        )
+                    )
     except Exception as e:
         error_message = f"Произошла ошибка в боте VK: {e}"
         send_telegram_alert(error_message)
