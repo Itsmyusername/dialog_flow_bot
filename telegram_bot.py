@@ -11,13 +11,22 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 logger = logging.getLogger(__name__)
 
 
+def extract_data_from_query_result(query_result):
+    parameters = query_result.parameters
+    extracted_parameters = {}
+    for param, value in parameters.items():
+        extracted_parameters[param] = value.string_value if value.string_value else value
+    return extracted_parameters
+
+
 def reply_to_user(update: Update, context: CallbackContext):
     project_id = os.environ["DIALOG_FLOW_GOOGLE_PROJECT_ID"]
     session_id = str(update.message.chat_id)
     text = update.message.text
     language_code = "ru"
-
-    response_text = get_dialogflow_response(project_id, session_id, text, language_code)
+    response = get_dialogflow_response(project_id, session_id, text, language_code)
+    # Убедитесь, что здесь вы обращаетесь к атрибуту fulfillment_text объекта response.query_result
+    response_text = response.fulfillment_text
     update.message.reply_text(response_text)
 
 
